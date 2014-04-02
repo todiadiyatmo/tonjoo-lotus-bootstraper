@@ -1,0 +1,92 @@
+
+.tonjoo-lf-submenu.list.grid {
+	overflow: hidden;
+}
+.tonjoo-lf-submenu.list li {
+	list-style: none;
+
+	margin: 5px;
+	padding: 5px;
+	height:90px;
+    display:block;
+}
+.list.grid li {
+	line-height: 100px;
+	float: left;
+	width: 400px;
+	height: 100px;
+	text-align: center;
+}
+.handle {
+	cursor: move;
+}
+.tonjoo-lf-submenu.list.connected {
+	width: 200px;
+	min-height: 100px;
+	float: left;
+}
+.tonjoo-lf-submenu li{
+    float:none;
+    clear:both;
+}
+
+.tonjoo-lf-submenu li.disabled{
+	opacity: 0.5;
+}
+.tonjoo-lf-submenu li.highlight{
+	background: #FEE25F;
+}
+.tonjoo-lf-submenu li.list-placeholder {
+	border: 1px dashed #CCC;
+	background: none;
+}
+
+.tonjoo-lf-submenu.list .column{
+    float:left;
+    display:inline-block;
+   
+}
+
+.tonjoo-lf-submenu.list .row{
+    height:30px;
+    line-height:30px;
+    display:block;
+}
+
+.tonjoo-lf-submenu.list .row.third{
+    height:32px;
+    padding-bottom:5px;     
+    border-bottom: 1px #efefef solid;
+}
+
+
+
+.tonjoo-lf-submenu.list .number{
+    width:30px;
+    line-height:90px;
+    font-size:20px;
+}
+
+.tonjoo-lf-submenu.list label{
+    width:200px;
+    display:inline-block;
+    
+}
+
+.tonjoo-lf-submenu.list span.shortcode{
+    background-color:#efefef;
+    padding:5px;
+}
+
+/*
+ * Form
+ */
+ 
+.tonjoo-lf-submenu.list input{
+   
+    width:200px;
+}
+
+#tonjoo-lf-submenu-list-content {
+	display:none;
+}

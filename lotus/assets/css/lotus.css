@@ -1,0 +1,93 @@
+#embeddedFramework{
+	background-color:#eceaea;
+	padding:20px;
+	font-family :'PT Sans' !important;
+	color:#84c770;
+}
+
+#embeddedFramework p#signature{
+	margin:0px ;
+	padding:0px ;
+	font-size:17px ;
+
+}
+
+#embeddedFramework h2{
+	margin:0px ;
+	padding:0px ;
+}
+
+#copyright{
+	font-style: italic;
+}
+
+
+#embeddedFramework .box{
+	background-color:#eceaea;
+	padding:20px;
+	font-family :'PT Sans' !important;
+	color:#84c770;
+}
+
+#embeddedFramework p#signature{
+	margin:0px ;
+	padding:0px ;
+	font-size:17px ;
+
+}
+
+#embeddedFramework p{
+	margin:0px ;
+	padding:0px ;
+}
+
+#embeddedFramework h2{
+	margin:0px ;
+	padding:0px ;
+}
+
+#embeddedFramework .notice{
+	background-color: #F5FDB7;
+	color: #AC553A;
+}
+
+#embeddedFramework .notice b{
+    background-color: rgb(255, 159, 37);
+    padding:0px 4px;
+}
+
+/*
+ * Table
+ */
+ 
+#embeddedFramework table {
+	border-bottom: 1px solid #ededed;
+	color: #757575;
+	font-size: 12px;
+	font-size: 0.857142857rem;
+	line-height: 2;
+	margin: 0 0 24px;
+	margin: 0 0 1.714285714rem;
+	width: 100%;
+	 border-spacing: 1px;
+    border-collapse: separate;
+}
+
+#embeddedFramework td {
+	border-top: 1px solid #ededed;
+	padding: 6px 10px 6px 0;
+	margin:0px;
+
+	border:1px solid red;
+}
+#embeddedFramework tr{
+	border:none;
+	margin:0px;
+	padding:0px;
+}
+
+
+#embeddedFramework td.line {
+	text-align:center;
+    color:red;
+}
