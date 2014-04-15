@@ -16,10 +16,10 @@ else{
 
 // Default Route
 if(is_admin()){
-	$l_config['default_route']='user';
+	$l_config['default_route']='welcome';
 }
 else{
-	$l_config['default_route']='user';
+	$l_config['default_route']='welcome';
 }
 /* ---------------
  * Preload Library
