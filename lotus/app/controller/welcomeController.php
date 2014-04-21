@@ -13,4 +13,5 @@ class welcomeController extends LController{
 		$this->view->render('index.php',array('template'=>'welcome/index.php'));
 	}
 
+
 }

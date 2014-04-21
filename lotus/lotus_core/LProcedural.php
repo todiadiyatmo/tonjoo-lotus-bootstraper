@@ -29,6 +29,7 @@ function l_displayMessage($title,$detail,$class){
 	$class = $class;
 
 	require_once L_BASEPATH."app/view/Message.php";
+	
 
 }
 

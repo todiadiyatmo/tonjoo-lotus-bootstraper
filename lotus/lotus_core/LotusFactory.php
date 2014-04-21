@@ -6,6 +6,10 @@ class LotusFactory {
 	private static $lezsql = false;
 	private static $lotus_loader = false;
 
+	/*
+	 * Loader Instace, method to load LF outside WP (To Do)
+	 */
+
 	public static function getLoaderInstance(){
 
 		if(self::$lotus_loader==false){
@@ -79,6 +83,12 @@ class LotusFactory {
 
 			//Common Library
 			require_once  L_BASEPATH.'lotus_core/lib/LCommon.php';
+
+			//URL Library
+			require_once  L_BASEPATH.'lotus_core/lib/LURL.php';
+
+
+			//Input Library
 			require_once  L_BASEPATH.'lotus_core/lib/LInput.php';
 
 

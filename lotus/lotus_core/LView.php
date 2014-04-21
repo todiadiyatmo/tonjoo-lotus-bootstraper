@@ -34,10 +34,10 @@ class LView {
 			}
 			$this->first_run = false;
 		}
-
+		
 
 		//check if fail
-		if(! include L_BASEPATH."app/view/{$name}"){
+		if(!include L_BASEPATH."app/view/{$name}"){
 			
 			l_displayMessage('Rendering error',"File ".L_BASEPATH."app/view/{$name} not found",'notice');
 		}			

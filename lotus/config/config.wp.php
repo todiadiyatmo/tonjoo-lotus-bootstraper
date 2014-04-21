@@ -1,8 +1,4 @@
 <?php  if ( ! defined('L_BASEPATH')) exit('No direct script access allowed');
-
-// Set Timezone
-date_default_timezone_set('Asia/Jakarta');
-
 //Global WP
 
 // Base URL
@@ -14,13 +10,7 @@ else{
 	$l_config['base_url']= get_permalink(LF_POST_HOOK_ID);
 }
 
-// Default Route
-if(is_admin()){
-	$l_config['default_route']='welcome';
-}
-else{
-	$l_config['default_route']='welcome';
-}
+
 /* ---------------
  * Preload Library
  * ---------------
@@ -38,28 +28,6 @@ $l_config['library'] = array('url');
  */
 
 $l_config['language'] = WPLANG;
-
-
-/* --------
- * 404 Mode
- * --------
- * 'default' , use HTML template for error notification
- * 'custom' , use custom url for 404
-  *
- * Default ~ show EF 404 page :
- * $l_config['404']['mode']='default'
- * 
- * Custom ~ predefined 404 page:
- * $l_config['404']['mode']='custom'
- * $l_config['404']['url'] = 'http://example.com/404.html'
- *
- * Custom ~ route to other Controller
- * $l_config['404']['mode']='custom'
- * $l_config['404']['url'] = 'http://example.com/index.php/welcome'
- */
-
-$l_config['404']['mode'] = 'default';
-
 
 /* -------------
  * Rewrite unkwown function to index  
@@ -94,7 +62,7 @@ $l_config['secret']=AUTH_SALT;
  * Real Debug, display error from LF core
  */
 $l_config['debug']=true;
-$l_config['real_debug']=true;
+$l_config['framework_debug']=false;
 
 /*
  *  Lotus Framework Operation Mode

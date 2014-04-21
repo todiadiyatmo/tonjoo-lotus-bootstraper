@@ -1,30 +1,15 @@
 <?php  if ( ! defined('L_BASEPATH')) exit('No direct script access allowed');
-
-// Set Timezone
-date_default_timezone_set('Asia/Jakarta');
-
 //Global WP
 
 // Base URL
+
 if(is_admin()){
-
-	$options = get_option('lf_settings'); 
-
-    $options = tonjoo_lf_load_default($options);
-
-	$slug = sanitize_title_with_dashes(trim($options['page_title']));
-
-	$l_config['base_url']= admin_url('admin.php?page='.$slug);
-
-	
+	$l_config['base_url']= admin_url('admin.php');	
 }
 else{
 	$l_config['base_url']= get_permalink(LF_POST_HOOK_ID);
 }
 
-
-// Default Route
-$l_config['default_route']='welcome';
 
 /* ---------------
  * Preload Library
@@ -94,8 +79,20 @@ $l_config['database']['driver'] = 'wp';
 
 $l_config['secret']=AUTH_SALT;
 
-$l_config['debug']=false;
-$l_config['real_debug']=false;
+
+/*
+ * Real Debug, display error from LF core
+ */
+$l_config['debug']=true;
+$l_config['framework_debug']=true;
+
+/*
+ *  Lotus Framework Operation Mode
+ *
+ *  (1) 'default' -> normal operation : http://your_base_url/controller/method/params1/params2/
+ *  (2) 'get_params' -> normal operation : http://your_base_url?controller=welcome&method=index&params1=ABCD&params2=ABCD/
+ * 
+ */
 
 /*
  *  Lotus Framework Operation Mode

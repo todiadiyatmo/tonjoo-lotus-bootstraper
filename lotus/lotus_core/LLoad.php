@@ -15,10 +15,13 @@ class LLoad extends LViewLoad {
 	}
 
 	function model($name,$params=array()){
+		
 		$this->current_load_type='model';
 		$this->current_loaded_class = $name."Model";
+		$this->load_path = L_BASEPATH."app/model/{$name}Model.php";
+
 		set_error_handler(array($this,'errorHandler'));
-		require_once L_BASEPATH."app/model/{$name}Model.php";
+		@require_once $this->load_path;
 		
 		$name = $name."Model";
 

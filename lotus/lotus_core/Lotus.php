@@ -9,7 +9,7 @@ class Lotus{
 
 	private $operation_mode;
 
-	private $first_method;
+	private $tryMethod;
 
 	private $controller;
 
@@ -19,14 +19,34 @@ class Lotus{
 
 	private $error=false;
 
+	private $find404 = 0;
 
 	function __construct(){
 
 
 		$this->common = new LCommon();
+		$this->URL = new LURL();
 		$this->input = new LInput();
 
 		$this->operation_mode = LConfig::getConfig('operation_mode');
+
+		$this->findRoute();
+
+	}
+
+	private function findRoute(){
+
+		if($this->find404==1){
+			$error_message = "404 Routes Error : Controller or method not found";
+		}else{
+			$error_message = "Controller or method not found";
+		}
+
+		
+
+		if($this->find404>1){
+			return;
+		}
 
 		// Check operation mode
 		if($this->operation_mode=='get_param'){
@@ -34,37 +54,36 @@ class Lotus{
 			$this->controller = $this->input->get('controller'); 
 
 		}else{
-			$this->controller = $this->common->getURLPart(1);	
+			// $this->controller = $this->common->getURLPart(1);	
+			$this->controller = $this->URL->getInternalURLSegment(1);	
 		}
 
 		if(!$this->controller){
-			$this->controller = LConfig::getConfig('default_route');
-			
+			$this->controller = LConfig::getRoute('default_route');
 		}
 
 
 		//safety, reserved controller name
 		if(preg_match('/^[a-zA-Z0-9_]+$/', $this->controller)==0){
 
-			$this->displayError('Reserved Controller Name',"<p>Controller name must only contain <b>a-zA-Z0-9_</b></p>");
+			$this->show404('Reserved Controller Name',"<p>Controller name must only contain <b>a-zA-Z0-9_</b></p>");
 			return;
 		}
 
 		//call the Controller
-
-
 		$this->callable_controller_name = $this->controller."Controller";
 
 		
 
-		//exit if controller not exist
+		//Try to call controller, will throw error if the Controller class not exist 
 		try {
 			if(!$this->common->load_file("app/controller/{$this->callable_controller_name}.php")){
 
 
 
 				$this->error=true;
-				throw new Exception('Controller or method not found');  
+				throw new Exception($error_message);  
+				return;
 			}
 
 
@@ -72,13 +91,21 @@ class Lotus{
 			if(class_exists($this->callable_controller_name)){
 				$this->controllerInstance = new $this->callable_controller_name();
 			}else{
+
+
+
 				$this->error=true;
-				throw new Exception('Controller or method not found');  
+				throw new Exception($error_message);  
 				return;
 			}
 
 		} catch (Exception $e) {
-			$this->display404($e,$this->callable_controller_name,'index');
+
+		
+
+			 $this->showErrorMessage($e,$this->callable_controller_name,'index');
+
+			 $this->error = true;
 
 			return;
 
@@ -94,7 +121,7 @@ class Lotus{
 
 		}
 		else{
-			$this->method = $this->common->getURLPart(2);
+			$this->method = $this->URL->getInternalURLSegment(2);
 		}
 		
 
@@ -104,7 +131,7 @@ class Lotus{
 		}
 
 
-		$this->first_method = $this->method;
+		$this->tryMethod = $this->method;
 
 		//call controller method, with the argument
 		try{
@@ -125,9 +152,9 @@ class Lotus{
 			
 			// if index function not exist
 			if($functionExist==0){
-				$this->method=$this->first_method;
+				$this->method=$this->tryMethod;
 
-				throw new Exception('Controller or method not found');  
+				throw new Exception($error_message);  
 				return;
 			}
 
@@ -139,8 +166,8 @@ class Lotus{
 
 
 			if($functionPublic==0){
-				$this->method=$this->first_method;
-				throw new Exception('Controller or method not found');  
+				$this->method=$this->tryMethod;
+				throw new Exception($error_message);  
 				return;
 			}
 
@@ -148,11 +175,11 @@ class Lotus{
 		}
 		catch (Exception $e) {
 
-			$this->display404($e,$this->callable_controller_name,$this->method);
+			 $this->showErrorMessage($e,$this->callable_controller_name,$this->method);
 
-			$this->error=true;
+			 $this->error = true;
+
 		}
-
 	}
 
 	function getMethod(){
@@ -164,10 +191,14 @@ class Lotus{
 	}
 
 	function route(){
+	
+
 		//dont do anything if error -> should be a error page
-		if($this->error==true)
-			return;
+		if($this->error==true){
 		
+			return;
+		}
+
 		if($this->operation_mode=='get_param'){
 
 			//pass method parameter , ?p1=input1&p2=input2&p3=input3 etc
@@ -186,16 +217,17 @@ class Lotus{
 
 			call_user_func_array(array($this->controllerInstance, $this->method),$params_array);
 		}
-		else
-			call_user_func_array(array($this->controllerInstance, $this->method),$this->common->getRemainingURLPieces($this->method));
+		else{
+
+			call_user_func_array(array($this->controllerInstance, $this->method),$this->URL->getInternalRemainingURLSegment($this->method));
+		}
 	}
 
-	private function displayError($title,$message){
+	private function show404($title,$message){
 
 		if(__c('404','mode')=='custom'){
 			l_redirect(__c('404','url'));
 		}
-		
 		
 		if(__c('debug')==true){
 			l_displayMessage($title,$message,'notice');
@@ -207,9 +239,31 @@ class Lotus{
 	}  
 
 
-	private function display404($e,$controller,$method){
+	private function showErrorMessage($e,$controller,$method){
 
 
+		//check if route override exist
+		if(LConfig::getRoute('404_override')&&LConfig::getRoute('404_override')!=''&&$this->find404<1){
+			
+			
+
+
+			$url = $this->URL->getInternalURL();
+
+			$startPosition = strpos($url, $this->controller);
+
+			$url = substr($url,0,$startPosition);
+
+			$url = $url.LConfig::getRoute('404_override');
+
+			$this->URL = new LURL($url);
+
+			$this->find404 = 1;
+
+			$this->findRoute();
+
+			return;
+		}
 
 		if(__c('debug')==true){
 			$title = $e->getMessage();
@@ -219,16 +273,12 @@ class Lotus{
 			</p>
 			";
 
-			$this->displayError($title,$message);
-			return;
-		}
-
-		if(__c('404','mode')=='custom'){
-			l_redirect(__c('404','url'));
+			$this->show404($title,$message);
+			return true;
 		}
 
 		require_once L_BASEPATH."app/view/404.php";
-		return;
+		return true;
 	}	
 
 

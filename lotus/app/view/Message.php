@@ -30,7 +30,7 @@ foreach ($backtraces as $backtrace) {
 	echo "<tr>";
 
 	if(isset($backtrace['file'])){
-		if(__c('real_debug')==false&&strpos($backtrace['file'],'lotus_core')){
+		if(__c('framework_debug')==false&&strpos($backtrace['file'],'lotus_core')){
 			continue;
 		}	
 		echo "<td>{$backtrace['file']}</td>";

@@ -49,6 +49,7 @@
 #embeddedFramework .notice{
 	background-color: #F5FDB7;
 	color: #AC553A;
+	margin-bottom:20px;
 }
 
 #embeddedFramework .notice b{

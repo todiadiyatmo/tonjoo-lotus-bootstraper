@@ -26,8 +26,10 @@ class LViewLoad extends LBaseLoad {
 
 	function helper($name,$params=array()){
 
+		$this->load_path = L_BASEPATH."app/helper/{$name}Helper.php";
+
 		set_error_handler(array($this,'errorHandler'));
-		require_once L_BASEPATH."app/helper/{$name}Helper.php";
+		@require_once $this->load_path;
 
 		//if controller call than do not create object
 		// array_push($this->loadedHelper, "{$name}Helper");  
