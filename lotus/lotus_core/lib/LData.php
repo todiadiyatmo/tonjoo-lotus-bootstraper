@@ -83,6 +83,7 @@ class LData extends LSingletonData{
 
 		$secret = LConfig::getConfig('secret');
 		$iv = md5(md5($secret));
+	
 		$value = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($secret), base64_decode($value), MCRYPT_MODE_CBC, $iv);
 
 		$value = unserialize($value);
@@ -96,15 +97,29 @@ class LData extends LSingletonData{
 	}
 
 	public function setUserdata($key,$value){
-		$_SESSION['L_UserdataSession'][$key]=$value;
+		$_SESSION['L_UserdataSession'][$key] = $this->encrypt($value);
 	}
 
-	public function getUserdata($key,$value){
+	public function getUserdata($key=''){
 		if(array_key_exists($key,$_SESSION['L_UserdataSession'])){
-			return $_SESSION['L_UserdataSession'][$key];
+			return $this->decrypt($_SESSION['L_UserdataSession'][$key]);
 		}
 		return false;
 	}
+	
+	public function getAllUserdata(){
+		if($_SESSION['L_UserdataSession'])
+		{
+			$session = $_SESSION['L_UserdataSession'];
+			foreach($session AS $key => $data)
+			{
+				$value[$key] = $this->decrypt($data);
+			}
+			return $value;
+		}
+		return false;
+	}
+	
 
 	public function flushAll(){
 		unset($_SESSION['L_UserdataSession']);
